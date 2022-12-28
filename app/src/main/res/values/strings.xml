@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Iluminar</string>
+    <string name="seja_bem_vindo_login_text">Seja Bem Vindo(a)!</string>
+    <string name="seu_e_mail_hint_login">Seu e-mail:</string>
+    <string name="sua_senha_hint_login">Sua senha:</string>
+    <string name="login_button_text">Entrar</string>
 </resources>
