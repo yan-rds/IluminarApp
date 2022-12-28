@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "227817868733",
+    "project_id": "iluminar-1ebcb",
+    "storage_bucket": "iluminar-1ebcb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:227817868733:android:1b0708556a1a1114db56d4",
+        "android_client_info": {
+          "package_name": "com.br.iluminar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "227817868733-evll174f060r353nvinc4ada4t60mhk7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYy-5oEIWvR6jNiuKqpr9unY5Gcg98W_E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "227817868733-evll174f060r353nvinc4ada4t60mhk7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
