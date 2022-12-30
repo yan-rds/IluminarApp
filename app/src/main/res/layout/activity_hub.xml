@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".HubActivity">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_image"
+        style="@style/profile_icon"
+        android:src="@drawable/profile_ic"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/year_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="35dp"
+        android:fontFamily="@font/indie_flower"
+        android:text="2023"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@id/profile_image"
+        app:layout_constraintTop_toTopOf="@id/profile_image" />
+
+    <TextView
+        android:id="@+id/period_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/indie_flower"
+        android:text="Período: Integral"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@id/profile_image"
+        app:layout_constraintTop_toBottomOf="@id/year_tv" />
+
+    <TextView
+        android:id="@+id/student_name_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/indie_flower"
+        android:maxLines="1"
+        android:text="Maria Cecília Rodrigues Ledres"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="28sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profile_image" />
+
+    <View
+        android:id="@+id/first_divisor"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="10dp"
+        android:background="@color/black_25"
+        app:layout_constraintEnd_toEndOf="@id/daily_activities"
+        app:layout_constraintStart_toStartOf="@id/daily_activities"
+        app:layout_constraintTop_toBottomOf="@id/student_name_tv" />
+
+    <TextView
+        android:id="@+id/daily_activities"
+        android:text="@string/atividades_do_dia_hub"
+        app:drawableStartCompat="@drawable/lapis_ic"
+        style="@style/hub_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/first_divisor" />
+
+    <View
+        android:id="@+id/second_divisor"
+        style="@style/divisor"
+        app:layout_constraintEnd_toEndOf="@id/daily_activities"
+        app:layout_constraintStart_toStartOf="@id/daily_activities"
+        app:layout_constraintTop_toBottomOf="@id/daily_activities" />
+
+    <TextView
+        android:id="@+id/calendar"
+        android:text="@string/agenda_hub"
+        app:drawableStartCompat="@drawable/calendario_ic"
+        style="@style/hub_button"
+        android:layout_marginStart="35dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/second_divisor" />
+
+    <View
+        android:id="@+id/third_divisor"
+        style="@style/divisor"
+        app:layout_constraintEnd_toEndOf="@id/daily_activities"
+        app:layout_constraintStart_toStartOf="@id/daily_activities"
+        app:layout_constraintTop_toBottomOf="@id/calendar" />
+
+
+    <TextView
+        android:id="@+id/messages"
+        android:text="@string/mensagens_hub"
+        app:drawableStartCompat="@drawable/mensagem_ic"
+        style="@style/hub_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/third_divisor" />
+
+    <View
+        android:id="@+id/fourth_divisor"
+        style="@style/divisor"
+        app:layout_constraintEnd_toEndOf="@id/daily_activities"
+        app:layout_constraintStart_toStartOf="@id/daily_activities"
+        app:layout_constraintTop_toBottomOf="@id/messages" />
+
+    <ImageView
+        android:layout_width="420dp"
+        android:layout_height="130dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/children_footer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

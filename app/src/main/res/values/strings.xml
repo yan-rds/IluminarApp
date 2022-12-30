@@ -4,4 +4,7 @@
     <string name="seu_e_mail_hint_login">Seu e-mail:</string>
     <string name="sua_senha_hint_login">Sua senha:</string>
     <string name="login_button_text">Entrar</string>
+    <string name="atividades_do_dia_hub">\t\tAtividades do dia</string>
+    <string name="agenda_hub">\t\tAgenda</string>
+    <string name="mensagens_hub">\t\tMensagens</string>
 </resources>

@@ -20,7 +20,37 @@
         <item name="android:layout_marginTop">20dp</item>
         <item name="android:textColor">@color/login_button_text_color</item>
         <item name="android:fontFamily">@font/noto_serif</item>
+    </style>
 
+    <style name="profile_icon">
+        <item name="civ_border_color">@color/profile_icon_border_color</item>
+        <item name="civ_border_width">1dp</item>
+        <item name="civ_circle_background_color">@color/profile_icon_inside_color</item>
+        <item name="android:layout_marginTop">60dp</item>
+        <item name="android:layout_marginStart">40dp</item>
+        <item name="android:layout_width">130dp</item>
+        <item name="android:layout_height">130dp</item>
+    </style>
+
+    <style name="hub_button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginStart">30dp</item>
+        <item name="android:layout_marginEnd">30dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="fontFamily">@font/indie_flower</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/black_80</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="divisor">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/black_25</item>
+        <item name="android:layout_margin">10dp</item>
     </style>
     
 </resources>
