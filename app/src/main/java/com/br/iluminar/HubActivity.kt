@@ -56,7 +56,6 @@ class HubActivity : AppCompatActivity() {
                 if (!document.getString("profileUri").isNullOrEmpty()){
                     document.getString("profileUri")?.let {
                         updateProfilePicture(it)
-                        Log.i("uri", it)
                     }
                 }
 
@@ -72,6 +71,21 @@ class HubActivity : AppCompatActivity() {
 
         binding.profileImage.setOnClickListener {
             pickImage()
+        }
+
+        binding.dailyActivities.setOnClickListener {
+            val intent = Intent(this, DailyActivitiesActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.calendar.setOnClickListener {
+            val intent = Intent(this, CalendarActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.messages.setOnClickListener {
+            val intent = Intent(this, MessagesActivity::class.java)
+            startActivity(intent)
         }
     }
 
