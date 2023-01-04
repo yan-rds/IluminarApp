@@ -43,12 +43,23 @@ class LoginActivity : AppCompatActivity() {
                 authUser()
             }
         }
+
+        binding.goToRegister.setOnClickListener{
+            goToRegisterActivity()
+        }
+
     }
 
     private fun goToHubActivity(){
         val intent = Intent(this, HubActivity::class.java)
         startActivity(intent)
     }
+
+    private fun goToRegisterActivity(){
+        val intent = Intent(this, RegisterFormActivity::class.java)
+        startActivity(intent)
+    }
+
 
     private fun authUser(){
         val email:String = binding.emailEt.text.toString()

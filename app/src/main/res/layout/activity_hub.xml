@@ -7,6 +7,16 @@
     android:background="@color/white"
     tools:context=".HubActivity">
 
+    <ImageButton
+        android:id="@+id/logout_bt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_logout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/white"
+        android:layout_margin="10dp"/>
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image"
         style="@style/profile_icon"
