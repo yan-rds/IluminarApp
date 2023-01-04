@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegisterFormActivity">
+
+    <TextView
+        android:textColor="@color/black_80"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tela de cadastro"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="20sp"/>
+
+    <EditText
+        android:id="@+id/register_email_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="100dp"
+        android:hint="email"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black_80"
+        style="@style/edit_text"/>
+
+    <EditText
+        android:id="@+id/register_password_Et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/register_email_et"
+        android:layout_marginTop="10dp"
+        android:hint="senha"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black_80"
+        style="@style/edit_text"/>
+
+    <EditText
+        android:id="@+id/register_name_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/register_password_Et"
+        android:layout_marginTop="10dp"
+        android:hint="Nome"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black_80"
+        style="@style/edit_text"/>
+
+    <EditText
+        android:id="@+id/register_periodo_Et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/register_name_et"
+        android:layout_marginTop="10dp"
+        android:hint="período"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black_80"
+        style="@style/edit_text"/>
+
+    <EditText
+        android:id="@+id/register_ano_letivo_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/register_periodo_Et"
+        android:layout_marginTop="10dp"
+        android:hint="ano letivo"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black_80"
+        style="@style/edit_text"/>
+
+    <EditText
+        android:id="@+id/register_nome_responsavel_Et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/register_ano_letivo_et"
+        android:layout_marginTop="10dp"
+        android:hint="Nome do responsável"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black_80"
+        style="@style/edit_text"/>
+
+    <EditText
+        android:id="@+id/register_celular_responsavel_Et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/register_nome_responsavel_Et"
+        android:layout_marginTop="10dp"
+        android:hint="celular do responsável"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black_80"
+        style="@style/edit_text"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/register_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/login_button"
+        app:layout_constraintTop_toBottomOf="@id/register_celular_responsavel_Et"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="registrar"
+        android:textAllCaps="false"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

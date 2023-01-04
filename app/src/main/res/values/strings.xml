@@ -7,4 +7,5 @@
     <string name="atividades_do_dia_hub">\t\tAtividades do dia</string>
     <string name="agenda_hub">\t\tAgenda</string>
     <string name="mensagens_hub">\t\tMensagens</string>
+    <string name="period_prefix">Período:\t</string>
 </resources>
