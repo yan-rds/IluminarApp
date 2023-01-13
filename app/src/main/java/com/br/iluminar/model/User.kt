@@ -1,4 +1,4 @@
-package com.br.iluminar
+package com.br.iluminar.model
 
 import android.net.Uri
 

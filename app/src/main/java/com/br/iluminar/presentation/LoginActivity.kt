@@ -1,4 +1,4 @@
-package com.br.iluminar
+package com.br.iluminar.presentation
 
 import android.content.Intent
 import android.os.Bundle

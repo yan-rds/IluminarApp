@@ -1,21 +1,17 @@
-package com.br.iluminar
+package com.br.iluminar.presentation
 
 import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
-import com.br.iluminar.databinding.ActivityLoginBinding
+import com.br.iluminar.model.User
 import com.br.iluminar.databinding.ActivityRegisterFormBinding
-import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
-import java.util.Objects
 
 class RegisterFormActivity : AppCompatActivity() {
 
