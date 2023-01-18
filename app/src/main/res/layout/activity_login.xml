@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:fontFamily="@font/dancing_script_bold"
+            android:fontFamily="@font/dancing_script_bold_compose"
             android:text="@string/seja_bem_vindo_login_text"
             android:textColor="@color/main_orange"
             android:textSize="28sp"
