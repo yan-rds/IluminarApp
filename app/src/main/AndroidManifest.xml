@@ -24,7 +24,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".presentation.DailyActivitiesActivity"
+            android:name=".presentation.DailyActivitiesScreen"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

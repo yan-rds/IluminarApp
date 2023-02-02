@@ -9,4 +9,5 @@
     <string name="mensagens_hub">\t\tMensagens</string>
     <string name="period_prefix">Período:\t</string>
     <string name="title_activity_daily_activities">DailyActivitiesActivity</string>
+    <string name="title_activity_add_screen">AddActivityScreen</string>
 </resources>
