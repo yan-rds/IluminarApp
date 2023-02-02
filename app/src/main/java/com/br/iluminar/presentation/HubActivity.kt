@@ -5,10 +5,10 @@ import android.content.Intent
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.br.iluminar.R
 import com.br.iluminar.databinding.ActivityHubBinding
 import com.github.dhaval2404.imagepicker.ImagePicker
@@ -18,7 +18,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
-import java.util.UUID
+import java.util.*
 
 class HubActivity : AppCompatActivity() {
 
@@ -51,7 +51,7 @@ class HubActivity : AppCompatActivity() {
                 binding.periodTv.text =
                     getString(R.string.period_prefix).plus(document.getString("period"))
                 binding.yearTv.text = document.get("schoolYear").toString()
-                if (!document.getString("profileUri").isNullOrEmpty()){
+                if (!document.getString("profileUri").isNullOrEmpty()) {
                     document.getString("profileUri")?.let {
                         updateProfilePicture(it)
                     }
@@ -72,13 +72,12 @@ class HubActivity : AppCompatActivity() {
         }
 
         binding.dailyActivities.setOnClickListener {
-            val intent = Intent(this, DailyActivitiesActivity::class.java)
+            val intent = Intent(this, DailyActivitiesScreen::class.java)
             startActivity(intent)
         }
 
         binding.calendar.setOnClickListener {
-            val intent = Intent(this, CalendarActivity::class.java)
-            startActivity(intent)
+
         }
 
         binding.messages.setOnClickListener {
@@ -103,6 +102,7 @@ class HubActivity : AppCompatActivity() {
             .start()
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (resultCode) {
@@ -136,17 +136,18 @@ class HubActivity : AppCompatActivity() {
         val storage = Firebase.storage.getReference("/images/$fileName")
         storage.putFile(uri).addOnSuccessListener {
             storage.downloadUrl.addOnCompleteListener() { task ->
-               if (task.isSuccessful){
-                   if (currentUser != null) {
-                       FirebaseFirestore.getInstance().collection("Usuarios")
-                           .document(currentUser).update("profileUri", task.result)
-                   }
+                if (task.isSuccessful) {
+                    if (currentUser != null) {
+                        FirebaseFirestore.getInstance().collection("Usuarios")
+                            .document(currentUser).update("profileUri", task.result)
+                    }
+                }
             }
+
         }
+    }
 
-    }}
-
-    private fun updateProfilePicture(uri:String) {
+    private fun updateProfilePicture(uri: String) {
         Picasso.get().load(uri).into(binding.profileImage)
 
     }
