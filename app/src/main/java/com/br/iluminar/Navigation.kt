@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.br.iluminar.presentation.AddTaskScreen
 import com.br.iluminar.presentation.DailyActivitiesFullScreen
+import com.br.iluminar.presentation.MessagesFullScreen
 
 @Composable
 fun Navigation() {
@@ -16,6 +17,10 @@ fun Navigation() {
         }
         composable(route = Screen.AddActivityScreen.route) {
             AddTaskScreen(navController)
+        }
+
+        composable(route = Screen.MessagesScreen.route) {
+            MessagesFullScreen()
         }
     }
 }

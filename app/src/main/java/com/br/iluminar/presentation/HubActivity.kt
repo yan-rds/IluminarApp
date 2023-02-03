@@ -81,7 +81,7 @@ class HubActivity : AppCompatActivity() {
         }
 
         binding.messages.setOnClickListener {
-            val intent = Intent(this, MessagesActivity::class.java)
+            val intent = Intent(this, MessagesScreen::class.java)
             startActivity(intent)
         }
     }
