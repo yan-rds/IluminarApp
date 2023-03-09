@@ -1,21 +1,22 @@
 package com.br.iluminar.presentation
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
-import com.br.iluminar.model.User
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import com.br.iluminar.databinding.ActivityRegisterFormBinding
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseAuthUserCollisionException
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FirebaseFirestore
+import com.br.iluminar.domain.model.User
+import com.br.iluminar.domain.utils.Resource
+import com.br.iluminar.presentation.viewmodels.RegisterFormViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RegisterFormActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityRegisterFormBinding.inflate(layoutInflater) }
+    private val viewModel: RegisterFormViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,44 +49,9 @@ class RegisterFormActivity : AppCompatActivity() {
     }
 
     private fun registerUser(email: String, password: String) {
-        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Toast.makeText(this, "Cadastro realizado com sucesso", Toast.LENGTH_SHORT)
-                        .show()
-                    saveUserData()
-                    goToLoginActivity()
-                } else {
-                    val erro: String = try {
-                        throw task.exception!!
-                    } catch (e: FirebaseAuthWeakPasswordException) {
-                        "Senha fraca"
-                    } catch (e: FirebaseAuthUserCollisionException) {
-                        "Esse email já foi cadastrado"
-                    } catch (e: FirebaseAuthInvalidCredentialsException) {
-                        "Email inválido"
-                    } catch (e: Exception) {
-                        "Erro ao cadastrar usuãrio"
-                    }
 
-                    Toast.makeText(this, erro, Toast.LENGTH_SHORT).show()
-                }
-
-            }
-    }
-
-    private fun saveUserData() {
-        val db: FirebaseFirestore = FirebaseFirestore.getInstance()
-
-        val userId = FirebaseAuth.getInstance().currentUser?.uid
-
-        val documentReference: DocumentReference? = userId?.let {
-            db.collection("Usuarios").document(
-                it
-            )
-        }
-        documentReference?.set(
-            User(
+        viewModel.signUp(
+            email, password, User(
                 binding.registerNameEt.text.toString(),
                 binding.registerPeriodoEt.text.toString(),
                 Integer.valueOf(binding.registerAnoLetivoEt.text.toString()),
@@ -93,10 +59,21 @@ class RegisterFormActivity : AppCompatActivity() {
                 binding.registerCelularResponsavelEt.text.toString(),
                 ""
             )
-        )?.addOnSuccessListener {
+        )
 
-        }?.addOnFailureListener { e ->
-            Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show()
+        viewModel.signUpFlow.observe(this) {
+            when (it) {
+                is Resource.Success -> goToLoginActivity()
+                is Resource.Failure -> {
+                    Toast.makeText(
+                        this,
+                        "${it.exception.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    Log.e("erro cadastro", "${it.exception.message}", it.exception)
+                }
+                else -> {}
+            }
         }
     }
 
@@ -104,6 +81,4 @@ class RegisterFormActivity : AppCompatActivity() {
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
     }
-
-
 }

@@ -20,8 +20,8 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.br.iluminar.R
-import com.br.iluminar.Screen
-import com.br.iluminar.model.Activity
+import com.br.iluminar.presentation.screens.Screen
+import com.br.iluminar.domain.model.Activity
 import com.br.iluminar.presentation.viewmodels.AddTaskViewModel
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore

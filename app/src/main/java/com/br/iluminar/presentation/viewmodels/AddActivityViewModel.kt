@@ -11,17 +11,18 @@ import java.util.*
 
 class AddTaskViewModel : ViewModel() {
 
+    init {
+
+    }
+
     private val _startTime = MutableLiveData<LocalTime>()
-    val startTime: LiveData<LocalTime>
-        get() = _startTime
+    val startTime: LiveData<LocalTime> = _startTime
 
     private val _endTime = MutableLiveData<LocalTime>()
-    val endTime: LiveData<LocalTime>
-        get() = _endTime
+    val endTime: LiveData<LocalTime> = _endTime
 
     private val _selectedDate = MutableLiveData<Calendar>()
-    val selectedDate: LiveData<Calendar>
-        get() = _selectedDate
+    val selectedDate: LiveData<Calendar> = _selectedDate
 
     fun showDatePicker(context: Context) {
         val now = Calendar.getInstance()

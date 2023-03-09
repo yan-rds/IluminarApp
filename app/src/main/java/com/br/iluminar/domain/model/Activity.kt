@@ -1,4 +1,4 @@
-package com.br.iluminar.model
+package com.br.iluminar.domain.model
 
 import androidx.compose.ui.graphics.Color
 import com.google.firebase.Timestamp

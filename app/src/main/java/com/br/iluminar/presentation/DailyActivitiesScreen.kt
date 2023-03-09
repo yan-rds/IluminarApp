@@ -33,8 +33,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.br.iluminar.Navigation
 import com.br.iluminar.R
-import com.br.iluminar.Screen
-import com.br.iluminar.model.Activity
+import com.br.iluminar.presentation.screens.Screen
+import com.br.iluminar.domain.model.Activity
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.delay
 import java.time.LocalDate
@@ -249,7 +249,6 @@ fun SeeFullAgendaText() {
 
 @Composable
 fun AddButton(navController: NavController?) {
-
 
     Scaffold(topBar = { },
         modifier = Modifier.padding(bottom = 40.dp, end = 30.dp),

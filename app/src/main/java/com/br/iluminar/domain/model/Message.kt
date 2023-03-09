@@ -1,4 +1,4 @@
-package com.br.iluminar.model
+package com.br.iluminar.domain.model
 
 data class Message(
     val content:String = "",

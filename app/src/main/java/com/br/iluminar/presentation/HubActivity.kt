@@ -7,21 +7,26 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.br.iluminar.R
+import com.br.iluminar.domain.utils.Resource
 import com.br.iluminar.databinding.ActivityHubBinding
+import com.br.iluminar.presentation.viewmodels.HubActivityViewModel
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
+@AndroidEntryPoint
 class HubActivity : AppCompatActivity() {
 
+    private val viewModel: HubActivityViewModel by viewModels()
     private val binding by lazy { ActivityHubBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,32 +43,29 @@ class HubActivity : AppCompatActivity() {
     }
 
     private fun getDataBaseData() {
-        val currentUser = FirebaseAuth.getInstance().currentUser?.uid
-        val documentReference: DocumentReference? =
-            currentUser?.let {
-                FirebaseFirestore.getInstance()
-                    .collection("Usuarios").document(it)
-            }
+        viewModel.getUserData()
 
-        documentReference?.addSnapshotListener { document, _ ->
-            if (document != null) {
-                binding.studentNameTv.text = document.getString("name")
-                binding.periodTv.text =
-                    getString(R.string.period_prefix).plus(document.getString("period"))
-                binding.yearTv.text = document.get("schoolYear").toString()
-                if (!document.getString("profileUri").isNullOrEmpty()) {
-                    document.getString("profileUri")?.let {
-                        updateProfilePicture(it)
+        viewModel.dataFlow.observe(this) {
+            when (it) {
+                is Resource.Loading -> {}
+                is Resource.Failure -> {}
+                is Resource.Success -> {
+                    Log.e("Result result", "${it.result}")
+                    binding.studentNameTv.text = it.result.name
+                    binding.periodTv.text = it.result.period
+                    binding.yearTv.text = it.result.schoolYear.toString()
+                    if (!it.result.profileUri.isNullOrEmpty()){
+                        updateProfilePicture(it.result.profileUri!!)
                     }
                 }
-
+                else -> {}
             }
         }
     }
 
     private fun setupListener() {
         binding.logoutBt.setOnClickListener {
-            FirebaseAuth.getInstance().signOut()
+            viewModel.signOut()
             goToLoginActivity()
         }
 
@@ -77,7 +79,7 @@ class HubActivity : AppCompatActivity() {
         }
 
         binding.calendar.setOnClickListener {
-
+            
         }
 
         binding.messages.setOnClickListener {
@@ -143,17 +145,17 @@ class HubActivity : AppCompatActivity() {
                     }
                 }
             }
-
         }
     }
 
     private fun updateProfilePicture(uri: String) {
         Picasso.get().load(uri).into(binding.profileImage)
-
     }
 
     private fun goToLoginActivity() {
         val intent = Intent(this, LoginActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        finish()
         startActivity(intent)
     }
 
