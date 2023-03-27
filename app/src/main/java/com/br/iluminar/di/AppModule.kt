@@ -4,6 +4,8 @@ import com.br.iluminar.data.Repository
 import com.br.iluminar.data.RepositoryImpl
 import com.br.iluminar.data.dataSource.LoginDataSource
 import com.br.iluminar.data.dataSource.LoginDataSourceImpl
+import com.br.iluminar.data.dataSource.UserDataDataSource
+import com.br.iluminar.data.dataSource.UserDataDataSourceImpl
 import com.br.iluminar.infrastructure.firebase.FirebaseRequests
 import com.br.iluminar.infrastructure.firebase.FirebaseRequestsImpl
 import com.br.iluminar.domain.useCase.*
@@ -27,8 +29,9 @@ object AppModule {
     @Singleton
     @Provides
     fun provideRepository(
-        requestLoginDataSource: LoginDataSource, ): Repository =
-        RepositoryImpl(requestLoginDataSource)
+        requestLoginDataSource: LoginDataSource, userDataDataSource: UserDataDataSource
+    ): Repository =
+        RepositoryImpl(requestLoginDataSource, userDataDataSource)
 
     @Singleton
     @Provides
@@ -36,7 +39,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideSignOutUseCase(repository: Repository): SignOutUseCase = SignOutUseCaseImpl(repository)
+    fun provideSignOutUseCase(repository: Repository): SignOutUseCase =
+        SignOutUseCaseImpl(repository)
 
     @Singleton
     @Provides
@@ -44,12 +48,18 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideGetUserDataUseCase(repository: Repository): GetUserDataUseCase = GetUserDataUseCaseImpl(repository)
+    fun provideGetUserDataUseCase(repository: Repository): GetUserDataUseCase =
+        GetUserDataUseCaseImpl(repository)
 
     @Singleton
     @Provides
     fun provideLoginDataSource(firebaseRequests: FirebaseRequests): LoginDataSource =
         LoginDataSourceImpl(firebaseRequests)
+
+    @Singleton
+    @Provides
+    fun provideUserDataDataSource(firebaseRequests: FirebaseRequests): UserDataDataSource =
+        UserDataDataSourceImpl(firebaseRequests)
 
     @Singleton
     @Provides

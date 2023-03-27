@@ -1,12 +1,16 @@
 package com.br.iluminar.data
 
 import com.br.iluminar.data.dataSource.LoginDataSource
+import com.br.iluminar.data.dataSource.UserDataDataSource
 import com.br.iluminar.domain.dto.UserDTO
 import com.br.iluminar.domain.model.User
 import com.br.iluminar.domain.utils.Resource
 import com.google.firebase.auth.FirebaseUser
 
-class RepositoryImpl(private val loginDataSource: LoginDataSource) : Repository {
+class RepositoryImpl(
+    private val loginDataSource: LoginDataSource,
+    private val userDataDataSource: UserDataDataSource
+) : Repository {
 
     override suspend fun login(email: String, password: String): Resource<FirebaseUser> {
         return loginDataSource.login(email, password)
@@ -25,7 +29,7 @@ class RepositoryImpl(private val loginDataSource: LoginDataSource) : Repository 
     }
 
     override suspend fun getUserData(): Resource<UserDTO> {
-        return loginDataSource.getUserData()
+        return userDataDataSource.getUserData()
     }
 
 }
