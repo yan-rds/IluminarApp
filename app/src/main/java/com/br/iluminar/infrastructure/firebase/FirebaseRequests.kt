@@ -2,6 +2,7 @@ package com.br.iluminar.infrastructure.firebase
 
 import com.br.iluminar.domain.utils.Resource
 import com.br.iluminar.domain.dto.UserDTO
+import com.br.iluminar.domain.model.Message
 import com.br.iluminar.domain.model.Task
 import com.br.iluminar.domain.model.User
 import com.google.firebase.auth.FirebaseUser
@@ -25,4 +26,8 @@ interface FirebaseRequests {
 
     suspend fun addTask(task: Task): Resource<Unit>
 
+
+    suspend fun addMessage(message: Message): Resource<Unit>
+
+    suspend fun getUserId(): Resource<String?>
 }

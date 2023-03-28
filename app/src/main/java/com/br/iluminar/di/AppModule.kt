@@ -28,9 +28,10 @@ object AppModule {
     fun provideRepository(
         requestLoginDataSource: LoginDataSource,
         userDataDataSource: UserDataDataSource,
-        tasksDataSource: TasksDataSource
+        tasksDataSource: TasksDataSource,
+        messageDataSource: MessageDataSource
     ): Repository =
-        RepositoryImpl(requestLoginDataSource, userDataDataSource, tasksDataSource)
+        RepositoryImpl(requestLoginDataSource, userDataDataSource, tasksDataSource, messageDataSource)
 
     @Singleton
     @Provides
@@ -62,6 +63,16 @@ object AppModule {
 
     @Singleton
     @Provides
+    fun provideAddMessageUseCase(repository: Repository): AddMessageUseCase =
+        AddMessageUseCaseImpl(repository)
+
+    @Singleton
+    @Provides
+    fun provideGetUserIdUseCase(repository: Repository): GetUserIdUseCase =
+        GetUserIdUseCaseImpl(repository)
+
+    @Singleton
+    @Provides
     fun provideLoginDataSource(firebaseRequests: FirebaseRequests): LoginDataSource =
         LoginDataSourceImpl(firebaseRequests)
 
@@ -74,6 +85,11 @@ object AppModule {
     @Provides
     fun provideTasksDataSource(firebaseRequests: FirebaseRequests): TasksDataSource =
         TasksDataSourceImpl(firebaseRequests)
+
+    @Singleton
+    @Provides
+    fun provideMessageDataSource(firebaseRequests: FirebaseRequests): MessageDataSource =
+        MessageDataSourceImpl(firebaseRequests)
 
     @Singleton
     @Provides

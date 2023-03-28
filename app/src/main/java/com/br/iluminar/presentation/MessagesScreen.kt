@@ -3,9 +3,11 @@ package com.br.iluminar.presentation
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -14,6 +16,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,11 +31,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.br.iluminar.R
 import com.br.iluminar.domain.model.Message
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+import com.br.iluminar.domain.utils.Resource
+import com.br.iluminar.presentation.viewmodels.MessagesViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MessagesScreen() : ComponentActivity() {
 
+    private val messagesViewModel: MessagesViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -42,14 +48,14 @@ class MessagesScreen() : ComponentActivity() {
                     .fillMaxSize()
                     .background(Color.White)
             ) {
-                MessagesFullScreen()
+                MessagesFullScreen(messagesViewModel)
             }
         }
     }
 }
 
 @Composable
-fun MessagesFullScreen() {
+fun MessagesFullScreen(viewModel: MessagesViewModel) {
     val fontFamily = FontFamily(
         Font(R.font.dancing_script_bold_compose)
     )
@@ -57,7 +63,7 @@ fun MessagesFullScreen() {
         MessageTitle(fontFamily = fontFamily)
         ContactThroughWhatsApp()
         TextMessageBox()
-        MessageBox()
+        MessageBox(viewModel)
     }
 
 }
@@ -126,12 +132,22 @@ fun TextMessageBox() {
 }
 
 @Composable
-fun MessageBox() {
+fun MessageBox(viewModel: MessagesViewModel) {
     var content by remember { mutableStateOf("") }
-    val fireStore = FirebaseFirestore.getInstance()
-    val myRef = fireStore.collection("Mensagens")
-    val userId = FirebaseAuth.getInstance().currentUser?.uid
+    val userIdResource = viewModel.userIdResource.observeAsState().value
+
     val context = LocalContext.current
+    val messageResult = viewModel.messageResource.observeAsState()
+    var authorId: String? = ""
+
+    viewModel.getUserId()
+    when (userIdResource) {
+        is Resource.Success -> {
+            authorId = userIdResource.result
+            Log.i("id", "$authorId")
+        }
+        else -> {}
+    }
 
     Box(
         modifier = Modifier
@@ -161,9 +177,11 @@ fun MessageBox() {
     Box(modifier = Modifier.fillMaxWidth()) {
         Button(
             onClick = {
+
+
                 val message = Message(
                     content = content,
-                    authorId = userId
+                    authorId = authorId
                 )
                 if (content.isEmpty()) {
                     Toast.makeText(
@@ -172,8 +190,16 @@ fun MessageBox() {
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {
-                    Toast.makeText(context, "Mensagem enviada", Toast.LENGTH_SHORT).show()
-                    myRef.add(message)
+
+                    viewModel.addMessage(message)
+                    when (messageResult.value) {
+                        is Resource.Success -> Toast.makeText(
+                            context,
+                            "Mensagem enviada",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        else -> {}
+                    }
                     content = ""
                 }
             },

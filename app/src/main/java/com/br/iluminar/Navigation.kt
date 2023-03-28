@@ -10,9 +10,10 @@ import com.br.iluminar.presentation.MessagesFullScreen
 import com.br.iluminar.presentation.screens.Screen
 import com.br.iluminar.presentation.viewmodels.AddTaskViewModel
 import com.br.iluminar.presentation.viewmodels.DailyTasksViewModel
+import com.br.iluminar.presentation.viewmodels.MessagesViewModel
 
 @Composable
-fun Navigation(dailyTasksViewModel: DailyTasksViewModel, addTaskViewModel: AddTaskViewModel) {
+fun Navigation(dailyTasksViewModel: DailyTasksViewModel, addTaskViewModel: AddTaskViewModel, messagesViewModel: MessagesViewModel) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Screen.DailyActivitiesScreen.route) {
         composable(route = Screen.DailyActivitiesScreen.route) {
@@ -23,7 +24,7 @@ fun Navigation(dailyTasksViewModel: DailyTasksViewModel, addTaskViewModel: AddTa
         }
 
         composable(route = Screen.MessagesScreen.route) {
-            MessagesFullScreen()
+            MessagesFullScreen(messagesViewModel)
         }
     }
 }

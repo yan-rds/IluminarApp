@@ -9,4 +9,8 @@ class UserDataDataSourceImpl (private val firebaseRequests: FirebaseRequests): U
     override suspend fun getUserData(): Resource<UserDTO> {
         return firebaseRequests.getUserData()
     }
+
+    override suspend fun getUserId(): Resource<String?> {
+        return firebaseRequests.getUserId()
+    }
 }

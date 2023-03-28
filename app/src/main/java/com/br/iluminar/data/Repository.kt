@@ -1,6 +1,7 @@
 package com.br.iluminar.data
 
 import com.br.iluminar.domain.dto.UserDTO
+import com.br.iluminar.domain.model.Message
 import com.br.iluminar.domain.model.Task
 import com.br.iluminar.domain.model.User
 import com.br.iluminar.domain.utils.Resource
@@ -19,4 +20,8 @@ interface Repository {
     suspend fun getTaskList(): List<Task>
 
     suspend fun addTask(task: Task): Resource<Unit>
+
+    suspend fun addMessage(message: Message): Resource<Unit>
+
+    suspend fun getUserId(): Resource<String?>
 }

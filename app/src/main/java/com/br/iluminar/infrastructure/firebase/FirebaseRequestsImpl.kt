@@ -3,6 +3,7 @@ package com.br.iluminar.infrastructure.firebase
 import android.util.Log
 import com.br.iluminar.domain.utils.Resource
 import com.br.iluminar.domain.dto.UserDTO
+import com.br.iluminar.domain.model.Message
 import com.br.iluminar.domain.model.Task
 import com.br.iluminar.domain.model.User
 import com.br.iluminar.domain.utils.CoroutineContext
@@ -108,6 +109,21 @@ class FirebaseRequestsImpl(private val coroutineContext: CoroutineContext) : Fir
             Resource.Failure(e)
         }
 
+    }
+
+    override suspend fun addMessage(message: Message): Resource<Unit> {
+        return try {
+            FirebaseFirestore.getInstance().collection("Mensagens").add(message).await()
+            Resource.Success(Unit)
+        } catch (e: Exception){
+            e.printStackTrace()
+            Resource.Failure(e)
+        }
+    }
+
+    override suspend fun getUserId(): Resource<String?> {
+        val userId = currentUser?.uid
+        return Resource.Success(userId)
     }
 
 

@@ -6,4 +6,6 @@ import com.br.iluminar.domain.utils.Resource
 interface UserDataDataSource {
 
     suspend fun getUserData(): Resource<UserDTO>
+
+    suspend fun getUserId(): Resource<String?>
 }
