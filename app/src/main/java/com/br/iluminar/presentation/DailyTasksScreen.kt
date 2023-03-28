@@ -1,10 +1,12 @@
 package com.br.iluminar.presentation
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -16,6 +18,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Alignment.Companion.Center
@@ -33,34 +36,42 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.br.iluminar.Navigation
 import com.br.iluminar.R
+import com.br.iluminar.domain.model.Task
 import com.br.iluminar.presentation.screens.Screen
-import com.br.iluminar.domain.model.Activity
-import com.google.firebase.firestore.FirebaseFirestore
+import com.br.iluminar.presentation.viewmodels.DailyTasksViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 
+@AndroidEntryPoint
 class DailyActivitiesScreen() : ComponentActivity() {
 
+    private val viewModel: DailyTasksViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
-            Navigation()
+            Navigation(viewModel)
         }
     }
 }
 
 @Composable
-fun DailyActivitiesFullScreen(navController: NavController?) {
+fun DailyActivitiesFullScreen(navController: NavController?, viewModel: DailyTasksViewModel) {
 
     val fontFamily = FontFamily(
         Font(R.font.dancing_script_bold_compose)
     )
 
-    val list = updateList()
+    viewModel.getTaskList()
+
+
+    val taskListState = viewModel.taskListFlow.observeAsState()
+    val taskList: List<Task> = taskListState.value!!
+
 
     Column(
         modifier = Modifier
@@ -75,7 +86,7 @@ fun DailyActivitiesFullScreen(navController: NavController?) {
             Title(fontFamily)
             AddButton(navController)
         }
-        ActivitiesList(list)
+        ActivitiesList(taskList)
         SeeFullAgendaText()
         Footer(
             painter = painterResource(id = R.drawable.children_footer),
@@ -110,31 +121,7 @@ private fun Title(
 }
 
 @Composable
-fun updateList(): List<Activity> {
-    val tasks = mutableListOf<Activity>()
-
-    val tasksCollection = FirebaseFirestore.getInstance().collection("Atividades").document().get()
-    Log.i("doc", tasksCollection.toString())
-
-    FirebaseFirestore.getInstance().collection("Atividades")
-        .addSnapshotListener { snapshot, exception ->
-            if (exception != null) {
-
-            }
-            snapshot?.documents?.forEach { document ->
-                Log.i("forEachDoc", document.toString())
-                val task = document.toObject(Activity::class.java)
-                if (task != null) {
-                    tasks.add(task)
-                }
-            }
-
-        }
-    return tasks
-}
-
-@Composable
-fun ActivitiesList(list: List<Activity>) {
+fun ActivitiesList(list: List<Task>) {
 
     var showList by remember { mutableStateOf(false) }
     LaunchedEffect(showList) {
@@ -170,7 +157,7 @@ fun ActivitiesList(list: List<Activity>) {
                 ) {
                     items(sortedList.size) {
                         val currentActivity = sortedList[it]
-                        TaskItem(activity = currentActivity)
+                        TaskItem(task = currentActivity)
                     }
                 }
                 Log.i("lista", "tamanho ${sortedList.size}")
@@ -190,7 +177,7 @@ fun ActivitiesList(list: List<Activity>) {
 
 
 @Composable
-fun TaskItem(activity: Activity) {
+fun TaskItem(task: Task) {
     Box(
         modifier = Modifier
             .border(1.dp, Color(0xFFF1884D), shape = RoundedCornerShape(30.dp))
@@ -205,8 +192,8 @@ fun TaskItem(activity: Activity) {
             Text(
                 modifier = Modifier
                     .padding(vertical = 15.dp, horizontal = 30.dp),
-                text = "${activity.startTime.format(DateTimeFormatter.ofPattern("hh:MM"))} - ${
-                    activity.endTime.format(
+                text = "${task.startTime.format(DateTimeFormatter.ofPattern("hh:MM"))} - ${
+                    task.endTime.format(
                         DateTimeFormatter.ofPattern("hh:MM")
                     )
                 }",
@@ -216,7 +203,7 @@ fun TaskItem(activity: Activity) {
             Text(
                 modifier = Modifier
                     .padding(vertical = 10.dp, horizontal = 30.dp),
-                text = activity.title,
+                text = task.title,
                 fontSize = 18.sp,
                 color = Color(0xFFF1884D)
             )
@@ -247,6 +234,7 @@ fun SeeFullAgendaText() {
     )
 }
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun AddButton(navController: NavController?) {
 
@@ -262,6 +250,7 @@ fun AddButton(navController: NavController?) {
                 Icon(Icons.Filled.Add, "")
             }
         }, content = {
+            PaddingValues(1.dp)
         })
 
 }

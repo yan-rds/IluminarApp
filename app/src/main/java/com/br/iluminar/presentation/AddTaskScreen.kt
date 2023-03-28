@@ -21,7 +21,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.br.iluminar.R
 import com.br.iluminar.presentation.screens.Screen
-import com.br.iluminar.domain.model.Activity
+import com.br.iluminar.domain.model.Task
 import com.br.iluminar.presentation.viewmodels.AddTaskViewModel
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
@@ -209,8 +209,8 @@ fun AddTaskScreen(navController: NavController) {
                 if (!showLoading) {
                     Button(
                         onClick = {
-                            val newActivity =
-                                Activity(
+                            val newTask =
+                                Task(
                                     title,
                                     description,
                                     Timestamp(
@@ -222,15 +222,15 @@ fun AddTaskScreen(navController: NavController) {
                                     endTime.toString(),
                                     selectedColor
                                 )
-                            if (newActivity.title.isEmpty()) {
+                            if (newTask.title.isEmpty()) {
                                 Toast.makeText(
                                     context,
                                     "O título não pode ser vazio",
                                     Toast.LENGTH_SHORT
                                 )
                                     .show()
-                            } else if (LocalTime.parse(newActivity.startTime)
-                                    .isAfter(LocalTime.parse(newActivity.endTime))
+                            } else if (LocalTime.parse(newTask.startTime)
+                                    .isAfter(LocalTime.parse(newTask.endTime))
                             ) {
                                 Toast.makeText(
                                     context,
@@ -239,7 +239,7 @@ fun AddTaskScreen(navController: NavController) {
                                 ).show()
                             } else {
                                 showLoading = true
-                                myRef.add(newActivity).addOnCompleteListener {
+                                myRef.add(newTask).addOnCompleteListener {
                                     if (it.isSuccessful) {
                                         navController.navigate(Screen.DailyActivitiesScreen.route)
                                     }

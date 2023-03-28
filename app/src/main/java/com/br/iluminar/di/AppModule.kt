@@ -2,10 +2,7 @@ package com.br.iluminar.di
 
 import com.br.iluminar.data.Repository
 import com.br.iluminar.data.RepositoryImpl
-import com.br.iluminar.data.dataSource.LoginDataSource
-import com.br.iluminar.data.dataSource.LoginDataSourceImpl
-import com.br.iluminar.data.dataSource.UserDataDataSource
-import com.br.iluminar.data.dataSource.UserDataDataSourceImpl
+import com.br.iluminar.data.dataSource.*
 import com.br.iluminar.infrastructure.firebase.FirebaseRequests
 import com.br.iluminar.infrastructure.firebase.FirebaseRequestsImpl
 import com.br.iluminar.domain.useCase.*
@@ -29,9 +26,11 @@ object AppModule {
     @Singleton
     @Provides
     fun provideRepository(
-        requestLoginDataSource: LoginDataSource, userDataDataSource: UserDataDataSource
+        requestLoginDataSource: LoginDataSource,
+        userDataDataSource: UserDataDataSource,
+        tasksDataSource: TasksDataSource
     ): Repository =
-        RepositoryImpl(requestLoginDataSource, userDataDataSource)
+        RepositoryImpl(requestLoginDataSource, userDataDataSource, tasksDataSource)
 
     @Singleton
     @Provides
@@ -53,6 +52,11 @@ object AppModule {
 
     @Singleton
     @Provides
+    fun provideGetTaskListUseCase(repository: Repository): GetTaskListUseCase =
+        GetTaskListUseCaseImpl(repository)
+
+    @Singleton
+    @Provides
     fun provideLoginDataSource(firebaseRequests: FirebaseRequests): LoginDataSource =
         LoginDataSourceImpl(firebaseRequests)
 
@@ -60,6 +64,11 @@ object AppModule {
     @Provides
     fun provideUserDataDataSource(firebaseRequests: FirebaseRequests): UserDataDataSource =
         UserDataDataSourceImpl(firebaseRequests)
+
+    @Singleton
+    @Provides
+    fun provideTasksDataSource(firebaseRequests: FirebaseRequests): TasksDataSource =
+        TasksDataSourceImpl(firebaseRequests)
 
     @Singleton
     @Provides

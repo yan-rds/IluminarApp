@@ -1,6 +1,7 @@
 package com.br.iluminar.data
 
 import com.br.iluminar.domain.dto.UserDTO
+import com.br.iluminar.domain.model.Task
 import com.br.iluminar.domain.model.User
 import com.br.iluminar.domain.utils.Resource
 import com.google.firebase.auth.FirebaseUser
@@ -14,4 +15,6 @@ interface Repository {
     suspend fun signOut()
 
     suspend fun getUserData(): Resource<UserDTO>
+
+    suspend fun getTaskList(): List<Task>
 }

@@ -1,7 +1,9 @@
 package com.br.iluminar.infrastructure.firebase
 
+import android.util.Log
 import com.br.iluminar.domain.utils.Resource
 import com.br.iluminar.domain.dto.UserDTO
+import com.br.iluminar.domain.model.Task
 import com.br.iluminar.domain.model.User
 import com.br.iluminar.domain.utils.CoroutineContext
 import com.google.firebase.auth.FirebaseAuth
@@ -73,4 +75,29 @@ class FirebaseRequestsImpl(private val coroutineContext: CoroutineContext) : Fir
         }
         return Resource.Success(user)
     }
+
+    override suspend fun getTasksList(): List<Task> {
+        val tasks = mutableListOf<Task>()
+
+        val tasksCollection =
+            FirebaseFirestore.getInstance().collection("Atividades").document().get()
+        Log.i("doc", tasksCollection.toString())
+
+        FirebaseFirestore.getInstance().collection("Atividades")
+            .addSnapshotListener { snapshot, exception ->
+                if (exception != null) {
+                    return@addSnapshotListener
+                }
+                snapshot?.documents?.forEach { document ->
+                    val task = document.toObject(Task::class.java)
+                    if (task != null) {
+                        tasks.add(task)
+                    }
+                }
+
+            }
+        return tasks
+    }
+
+
 }

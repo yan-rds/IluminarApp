@@ -8,13 +8,14 @@ import com.br.iluminar.presentation.AddTaskScreen
 import com.br.iluminar.presentation.DailyActivitiesFullScreen
 import com.br.iluminar.presentation.MessagesFullScreen
 import com.br.iluminar.presentation.screens.Screen
+import com.br.iluminar.presentation.viewmodels.DailyTasksViewModel
 
 @Composable
-fun Navigation() {
+fun Navigation(dailyTasksViewModel: DailyTasksViewModel) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Screen.DailyActivitiesScreen.route) {
         composable(route = Screen.DailyActivitiesScreen.route) {
-            DailyActivitiesFullScreen(navController)
+            DailyActivitiesFullScreen(navController, dailyTasksViewModel)
         }
         composable(route = Screen.AddActivityScreen.route) {
             AddTaskScreen(navController)
