@@ -17,4 +17,6 @@ interface Repository {
     suspend fun getUserData(): Resource<UserDTO>
 
     suspend fun getTaskList(): List<Task>
+
+    suspend fun addTask(task: Task): Resource<Unit>
 }

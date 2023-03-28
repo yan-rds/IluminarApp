@@ -57,6 +57,11 @@ object AppModule {
 
     @Singleton
     @Provides
+    fun provideAddTaskUseCase(repository: Repository): AddTaskUseCase =
+        AddTaskUseCaseImpl(repository)
+
+    @Singleton
+    @Provides
     fun provideLoginDataSource(firebaseRequests: FirebaseRequests): LoginDataSource =
         LoginDataSourceImpl(firebaseRequests)
 

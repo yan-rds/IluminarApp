@@ -99,5 +99,16 @@ class FirebaseRequestsImpl(private val coroutineContext: CoroutineContext) : Fir
         return tasks
     }
 
+    override suspend fun addTask(task: Task): Resource<Unit> {
+        return try {
+            FirebaseFirestore.getInstance().collection("Atividades").add(task).await()
+            Resource.Success(Unit)
+        } catch (e: Exception){
+            e.printStackTrace()
+            Resource.Failure(e)
+        }
+
+    }
+
 
 }

@@ -38,6 +38,7 @@ import com.br.iluminar.Navigation
 import com.br.iluminar.R
 import com.br.iluminar.domain.model.Task
 import com.br.iluminar.presentation.screens.Screen
+import com.br.iluminar.presentation.viewmodels.AddTaskViewModel
 import com.br.iluminar.presentation.viewmodels.DailyTasksViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -49,12 +50,13 @@ import java.util.*
 @AndroidEntryPoint
 class DailyActivitiesScreen() : ComponentActivity() {
 
-    private val viewModel: DailyTasksViewModel by viewModels()
+    private val dailyTasksViewModel: DailyTasksViewModel by viewModels()
+    private val addTaskViewModel: AddTaskViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
-            Navigation(viewModel)
+            Navigation(dailyTasksViewModel, addTaskViewModel)
         }
     }
 }

@@ -6,14 +6,23 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.br.iluminar.domain.model.Task
+import com.br.iluminar.domain.useCase.AddTaskUseCase
+import com.br.iluminar.domain.utils.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import java.time.LocalTime
 import java.util.*
+import javax.inject.Inject
 
-class AddTaskViewModel : ViewModel() {
+@HiltViewModel
+class AddTaskViewModel @Inject constructor(
+    private val addTaskUseCase: AddTaskUseCase
+): ViewModel() {
 
-    init {
-
-    }
+    private val _resource = MutableLiveData<Resource<Unit>?>(null)
+    val resource: LiveData<Resource<Unit>?> = _resource
 
     private val _startTime = MutableLiveData<LocalTime>()
     val startTime: LiveData<LocalTime> = _startTime
@@ -23,6 +32,12 @@ class AddTaskViewModel : ViewModel() {
 
     private val _selectedDate = MutableLiveData<Calendar>()
     val selectedDate: LiveData<Calendar> = _selectedDate
+
+    fun addTask(task: Task) = viewModelScope.launch {
+        _resource.value = Resource.Loading
+        val result = addTaskUseCase.invoke(task)
+        _resource.value = result
+    }
 
     fun showDatePicker(context: Context) {
         val now = Calendar.getInstance()

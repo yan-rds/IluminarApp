@@ -39,4 +39,8 @@ class RepositoryImpl(
         return tasksDataSource.getTaskList()
     }
 
+    override suspend fun addTask(task: Task): Resource<Unit> {
+        return tasksDataSource.addTask(task)
+    }
+
 }

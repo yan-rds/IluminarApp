@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,15 +18,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.br.iluminar.R
-import com.br.iluminar.presentation.screens.Screen
 import com.br.iluminar.domain.model.Task
+import com.br.iluminar.domain.utils.Resource
+import com.br.iluminar.presentation.screens.Screen
 import com.br.iluminar.presentation.viewmodels.AddTaskViewModel
 import com.google.firebase.Timestamp
-import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.delay
 import java.sql.Date
 import java.time.LocalDate
 import java.time.LocalTime
@@ -34,12 +33,15 @@ import java.time.format.DateTimeFormatter
 
 
 @Composable
-fun AddTaskScreen(navController: NavController) {
+fun AddTaskScreen(navController: NavController, viewModel: AddTaskViewModel) {
     val fontFamily = FontFamily(
         Font(R.font.dancing_script_bold_compose)
     )
 
-    val viewModel: AddTaskViewModel = viewModel()
+    var resultObserver = viewModel.resource.observeAsState().value
+    var showLoading by remember { mutableStateOf(false) }
+    var isNavigationDone by remember { mutableStateOf(false) }
+    var isSaveButtonClicked by remember { mutableStateOf(false) }
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
     var selectedColor = Color.Blue
@@ -47,14 +49,26 @@ fun AddTaskScreen(navController: NavController) {
     var startTime by remember { mutableStateOf(LocalTime.of(9, 0)) }
     var endTime by remember { mutableStateOf(LocalTime.of(17, 0)) }
 
-
     val colors = listOf(Color.Blue, Color.Yellow, Color.Cyan, Color.Green, Color.Magenta)
     val context = LocalContext.current
     val lifecycle = context as LifecycleOwner
 
-    val database = FirebaseFirestore.getInstance()
-    val myRef = database.collection("Atividades")
-
+    if (isSaveButtonClicked) {
+        when (resultObserver) {
+            is Resource.Loading -> {
+                showLoading = true
+                isNavigationDone = false
+            }
+            is Resource.Success -> {
+                if (!isNavigationDone) {
+                    isNavigationDone = true
+                    isSaveButtonClicked = false
+                    navController.navigate(Screen.DailyActivitiesScreen.route)
+                }
+            }
+            else -> {}
+        }
+    }
     Box(
         Modifier
             .fillMaxSize()
@@ -92,7 +106,6 @@ fun AddTaskScreen(navController: NavController) {
                     .height(200.dp)
                     .fillMaxWidth()
             )
-
             Column() {
                 Row(horizontalArrangement = Arrangement.SpaceAround) {
                     Text(
@@ -149,7 +162,6 @@ fun AddTaskScreen(navController: NavController) {
                         fontSize = 18.sp
                     )
                 }
-
                 Row(horizontalArrangement = Arrangement.SpaceAround) {
                     Text(
                         modifier = Modifier
@@ -176,8 +188,6 @@ fun AddTaskScreen(navController: NavController) {
                         fontSize = 18.sp
                     )
                 }
-
-
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -199,65 +209,53 @@ fun AddTaskScreen(navController: NavController) {
                         }
                     }
                 }
+                Button(
+                    onClick = {
+                        val newTask =
+                            Task(
+                                title,
+                                description,
+                                Timestamp(
+                                    Date.from(
+                                        date.atStartOfDay(ZoneId.systemDefault()).toInstant()
+                                    )
+                                ),
+                                startTime.toString(),
+                                endTime.toString(),
+                                selectedColor
+                            )
+                        if (newTask.title.isEmpty()) {
+                            Toast.makeText(
+                                context,
+                                "O título não pode ser vazio",
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+                        } else if (LocalTime.parse(newTask.startTime)
+                                .isAfter(LocalTime.parse(newTask.endTime))
+                        ) {
+                            Toast.makeText(
+                                context,
+                                "O horário de início não pode ser após o horário de término",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            viewModel.addTask(newTask)
+                            isSaveButtonClicked = true
+                        }
+                    },
+                    modifier = Modifier
+                        .padding(top = 16.dp)
+                        .align(Alignment.CenterHorizontally),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFFF1884D))
 
-                var showLoading by remember { mutableStateOf(false) }
-                LaunchedEffect(showLoading) {
-                    delay(2000)
-
+                ) {
+                    Text(
+                        text = "Salvar",
+                        style = MaterialTheme.typography.button
+                    )
                 }
-
-                if (!showLoading) {
-                    Button(
-                        onClick = {
-                            val newTask =
-                                Task(
-                                    title,
-                                    description,
-                                    Timestamp(
-                                        Date.from(
-                                            date.atStartOfDay(ZoneId.systemDefault()).toInstant()
-                                        )
-                                    ),
-                                    startTime.toString(),
-                                    endTime.toString(),
-                                    selectedColor
-                                )
-                            if (newTask.title.isEmpty()) {
-                                Toast.makeText(
-                                    context,
-                                    "O título não pode ser vazio",
-                                    Toast.LENGTH_SHORT
-                                )
-                                    .show()
-                            } else if (LocalTime.parse(newTask.startTime)
-                                    .isAfter(LocalTime.parse(newTask.endTime))
-                            ) {
-                                Toast.makeText(
-                                    context,
-                                    "O horário de início não pode ser após o horário de término",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            } else {
-                                showLoading = true
-                                myRef.add(newTask).addOnCompleteListener {
-                                    if (it.isSuccessful) {
-                                        navController.navigate(Screen.DailyActivitiesScreen.route)
-                                    }
-                                }
-                            }
-                        },
-                        modifier = Modifier
-                            .padding(top = 16.dp)
-                            .align(Alignment.CenterHorizontally),
-                        colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFFF1884D))
-
-                    ) {
-                        Text(
-                            text = "Salvar",
-                            style = MaterialTheme.typography.button
-                        )
-                    }
-                } else {
+                if (showLoading) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth(),
@@ -266,11 +264,11 @@ fun AddTaskScreen(navController: NavController) {
                         CircularProgressIndicator(color = Color(0xFFF1884D))
                     }
                 }
-
             }
+
+
         }
     }
-
 
 }
 

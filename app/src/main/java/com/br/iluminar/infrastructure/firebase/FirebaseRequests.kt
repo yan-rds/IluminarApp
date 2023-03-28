@@ -23,4 +23,6 @@ interface FirebaseRequests {
 
     suspend fun getTasksList(): List<Task>
 
+    suspend fun addTask(task: Task): Resource<Unit>
+
 }
